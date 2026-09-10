@@ -17,7 +17,7 @@ LLM-Mini is a compact, decoder-only transformer written **from the ground up in 
 
 It answers one question: *can a genuinely useful language model be built end-to-end on consumer hardware?*
 
-> **Attribution:** This project is based on [MiniLLM by tathagat-git](https://github.com/tathagat-git/MiniLLM). The model architecture, training pipeline, backend, and frontend originate from that repository.
+
 
 ---
 
