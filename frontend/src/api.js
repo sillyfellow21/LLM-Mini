@@ -1,5 +1,5 @@
 const configuredBase = import.meta.env.VITE_API_URL?.trim().replace(/\/$/, "");
-export const API_BASE = configuredBase || (import.meta.env.DEV ? "http://127.0.0.1:8000" : "");
+export const API_BASE = configuredBase || (import.meta.env.DEV ? "/api" : "");
 const requireApiBase = () => {
   if (!API_BASE) throw new Error("Backend URL is not configured. Set VITE_API_URL in Vercel.");
   return API_BASE;

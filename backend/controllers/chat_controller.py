@@ -129,8 +129,19 @@ def stream_chat(request: Request, message: str, task: str,
                                           "X-Accel-Buffering": "no"})
 
     # ── Farmer/Story/Poetry: model generates ──────────────
-    tokenizer = get_tokenizer()
-    model     = get_model(detected_task)
+    try:
+        tokenizer = get_tokenizer()
+        model     = get_model(detected_task)
+    except Exception:
+        async def model_error():
+            yield "data: " + json.dumps({
+                "type": "error",
+                "message": f"The {detected_task} model checkpoint is not available locally yet."
+            }) + "\n\n"
+
+        return StreamingResponse(model_error(), media_type="text/event-stream",
+                                 headers={"Cache-Control": "no-cache",
+                                          "X-Accel-Buffering": "no"})
 
     async def model_stream():
         yield "data: " + json.dumps({

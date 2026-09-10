@@ -128,9 +128,7 @@ def build_prompt(task, user_input, prompts):
         wiki = search_wikipedia(user_input, max_chars=600)
         if wiki:
             return format_wiki_answer(wiki), True, True
-        # Fallback to model if wiki fails
-        cfg = prompts[task]
-        return cfg["prefix"] + user_input + cfg["response"], False, False
+        return format_wiki_answer(None), False, True
 
     # Farmer — hybrid: wiki context + model advice
     if task in HYBRID_TASKS:
