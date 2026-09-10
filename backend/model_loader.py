@@ -1,10 +1,11 @@
 import torch, sys, os
-sys.path.insert(0, os.path.expanduser("~/LLM-Mini"))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
 from transformers import GPT2Tokenizer
 import config
 from model.gpt import LLM_Mini
 
-CHECKPOINTS = os.path.expanduser("~/LLM-Mini/checkpoints")
+CHECKPOINTS = os.getenv("CHECKPOINT_DIR", os.path.join(PROJECT_ROOT, "checkpoints"))
 TASKS       = ["farmer", "story", "poetry", "qa"]
 _models     = {}
 _tokenizer  = None
@@ -39,6 +40,10 @@ def get_model(task):
 
 def preload_all():
     for t in TASKS:
+        path = os.path.join(CHECKPOINTS, f"{t}_best.pt")
+        if not os.path.exists(path):
+            print(f"[Loader] {t} skipped: checkpoint not found at {path}")
+            continue
         try: get_model(t)
         except Exception as e: print(f"[Loader] {t} failed: {e}")
 

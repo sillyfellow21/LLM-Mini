@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "../.env"))
 
-DB_URL      = os.getenv("DATABASE_URL")
+DB_URL      = os.getenv("DATABASE_URL", "sqlite:///./llm_mini.db")
 JWT_SECRET  = os.getenv("JWT_SECRET", "secret")
 JWT_ALGO    = "HS256"
 SMTP_HOST   = os.getenv("SMTP_HOST")
