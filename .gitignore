@@ -1,0 +1,25 @@
+
+#vite
+.vite/
+
+# Environment variables
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+
+# ML models
+*.pt
+*.pth
+checkpoints/
+models/
+
+# datasets
+data/
+datasets/
+
+# Node
+node_modules/
+
