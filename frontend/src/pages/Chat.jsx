@@ -4,9 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar    from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import InputBar   from "../components/InputBar";
-import { api }    from "../api";
-
-const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+import { api, API_BASE } from "../api";
 
 export default function Chat({ guest = false }) {
   const { user, logout } = useAuth();
@@ -49,6 +47,15 @@ export default function Chat({ guest = false }) {
 
   const sendMessage = async (text) => {
     if (!text.trim() || streaming) return;
+    if (!API_BASE) {
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        role: "assistant",
+        content: "Backend URL is not configured. Set VITE_API_URL in Vercel.",
+        error: true,
+      }]);
+      return;
+    }
     let chatId = activeChatId;
     if (!chatId && user) {
       const c = await api.post("/chats", { title: "New Chat" });
@@ -67,7 +74,7 @@ export default function Chat({ guest = false }) {
     if (token)  params.append("token", token);
 
     if (esRef.current) esRef.current.close();
-    const es = new EventSource(`${BASE}/chat/stream?${params}`);
+    const es = new EventSource(`${API_BASE}/chat/stream?${params}`);
     esRef.current = es;
 
     es.onmessage = (e) => {
