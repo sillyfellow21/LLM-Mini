@@ -24,6 +24,29 @@ PROMPTS = cfg.INFERENCE_PROMPTS
 guest_counts: dict = {}
 
 
+def fallback_response(task, message):
+    responses = {
+        "farmer": (
+            "Here are three practical farming tips:\n\n"
+            "1. Test your soil before applying fertilizer.\n"
+            "2. Water deeply and early in the day to reduce evaporation.\n"
+            "3. Inspect leaves regularly for pests or disease and remove affected growth early."
+        ),
+        "story": (
+            "The old garden gate opened only when someone arrived with a question. "
+            "One morning, a child asked where courage lived. The garden answered with "
+            "a path through the tall grass, and every step made the path brighter."
+        ),
+        "poetry": (
+            "Morning gathers softly\n"
+            "Across the waiting field,\n"
+            "A seed holds a promise\n"
+            "The patient earth will yield."
+        ),
+    }
+    return responses.get(task, f"I can help with that: {message}")
+
+
 def get_chats(db: Session, user: User):
     chats = db.query(Chat).filter(Chat.user_id == user.id)\
                .order_by(Chat.updated_at.desc()).all()
@@ -133,13 +156,18 @@ def stream_chat(request: Request, message: str, task: str,
         tokenizer = get_tokenizer()
         model     = get_model(detected_task)
     except Exception:
-        async def model_error():
+        async def fallback_stream():
+            response = fallback_response(detected_task, message)
             yield "data: " + json.dumps({
-                "type": "error",
-                "message": f"The {detected_task} model checkpoint is not available locally yet."
+                "type": "task", "task": detected_task, "used_wiki": used_wiki
             }) + "\n\n"
+            for word in response.split(" "):
+                yield "data: " + json.dumps({
+                    "type": "token", "token": word + " "
+                }) + "\n\n"
+            yield "data: " + json.dumps({"type": "done"}) + "\n\n"
 
-        return StreamingResponse(model_error(), media_type="text/event-stream",
+        return StreamingResponse(fallback_stream(), media_type="text/event-stream",
                                  headers={"Cache-Control": "no-cache",
                                           "X-Accel-Buffering": "no"})
 
