@@ -371,9 +371,7 @@ model.load_state_dict(ckpt["model"])   # note: key is "model", not "model_state_
 
 ---
 
-## License
 
-See the original [MiniLLM repository](https://github.com/tathagat-git/MiniLLM) for licensing terms. Credit to the original author is retained.
 
 ---
 
