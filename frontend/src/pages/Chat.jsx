@@ -112,7 +112,7 @@ export default function Chat({ guest = false }) {
             <span className="link" onClick={() => navigate("/register")}>Register free</span> for unlimited access
           </div>
         )}
-        <ChatWindow messages={messages} streaming={streaming} />
+        <ChatWindow messages={messages} disabled={streaming} onSuggestion={sendMessage} />
         <InputBar onSend={sendMessage} disabled={streaming} />
       </div>
     </div>

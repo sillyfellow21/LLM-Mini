@@ -62,8 +62,12 @@ button { cursor: pointer; border: none; background: none; color: inherit; font: 
 .empty-state h2 { font-size: 24px; color: var(--text); }
 .empty-state p { font-size: 15px; }
 .hint-pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
-.hint-pills span { background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 20px; padding: 6px 14px; font-size: 13px; }
+.hint-pill { background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
+  border-radius: 20px; padding: 8px 14px; font: inherit; font-size: 13px; cursor: pointer;
+  touch-action: manipulation; transition: background .15s, border-color .15s, color .15s; }
+.hint-pill:hover, .hint-pill:focus-visible { background: var(--bg3); border-color: var(--primary);
+  color: var(--text); outline: none; }
+.hint-pill:disabled { cursor: not-allowed; opacity: .5; }
 .message-row { display: flex; gap: 12px; padding: 8px 16px; max-width: 860px; margin: 0 auto; width: 100%; }
 .message-row.user { flex-direction: row-reverse; }
 .msg-avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
