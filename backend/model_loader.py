@@ -2,7 +2,7 @@ import torch, sys, os
 sys.path.insert(0, os.path.expanduser("~/LLM-Mini"))
 from transformers import GPT2Tokenizer
 import config
-from model.gpt import LLMModel
+from model.gpt import LLM_Mini
 
 CHECKPOINTS = os.path.expanduser("~/LLM-Mini/checkpoints")
 TASKS       = ["farmer", "story", "poetry", "qa"]
@@ -22,7 +22,7 @@ def get_model(task):
         path = os.path.join(CHECKPOINTS, f"{task}_best.pt")
         print(f"[Loader] Loading {task} model...")
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        m = LLMModel(
+        m = LLM_Mini(
             embed_dim   = config.EMBED_DIM,
             num_heads   = config.NUM_HEADS,
             num_layers  = config.NUM_LAYERS,

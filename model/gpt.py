@@ -75,7 +75,7 @@ class TransformerBlock(nn.Module):
         return x
 
 
-class LLMModel(nn.Module):
+class LLM_Mini(nn.Module):
     def __init__(self, vocab_size, embed_dim, num_heads,
                  num_layers, ffn_dim, max_seq_len, dropout=0.1):
         super().__init__()
@@ -99,7 +99,7 @@ class LLMModel(nn.Module):
         self.apply(self._init_weights)
 
         total = sum(p.numel() for p in self.parameters())
-        print(f"[LLMModel] Parameters: {total:,}  ({total/1e6:.1f}M)")
+        print(f"[LLM-Mini] Parameters: {total:,}  ({total/1e6:.1f}M)")
 
     def _init_weights(self, module):
         if isinstance(module, nn.Linear):
@@ -137,7 +137,7 @@ class LLMModel(nn.Module):
 
 
 def build_model(config):
-    model = LLMModel(
+    model = LLM_Mini(
         vocab_size  = config.VOCAB_SIZE,
         embed_dim   = config.EMBED_DIM,
         num_heads   = config.NUM_HEADS,

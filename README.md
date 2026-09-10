@@ -362,7 +362,7 @@ model.load_state_dict(ckpt["model"])   # note: key is "model", not "model_state_
 | Error | Fix |
 | --- | --- |
 | `No module named 'backend'` | Run from repo root: `python -m uvicorn backend.main:app --reload` |
-| `cannot import LLMModel from 'model'` | Use: `from model.gpt import LLMModel` |
+| `cannot import LLM_Mini from 'model'` | Use: `from model.gpt import LLM_Mini` |
 | `Unexpected key 'model' in state_dict` | Use: `model.load_state_dict(ckpt["model"])` |
 | `tuple indices must be integers` | Model returns `(logits, loss)` — unpack: `logits, _ = model(ids)` |
 | Frontend shows black screen | `src/` folder is empty — check component files exist |
