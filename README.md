@@ -320,6 +320,16 @@ npm run dev
 # Open http://localhost:5173
 ```
 
+## Deploying the Frontend to Vercel
+
+The React frontend is configured for Vercel from the repository root. Import this repository into Vercel and set the environment variable below to the public URL of a separately hosted backend:
+
+```bash
+VITE_API_URL=https://your-backend.example.com
+```
+
+Vercel will install dependencies from `frontend/package-lock.json`, build the Vite app, serve `frontend/dist`, and support client-side routes. The FastAPI backend loads GPU checkpoints and PostgreSQL, so it must run on a GPU-capable backend host rather than Vercel's frontend deployment.
+
 ---
 
 ## Checkpoint Format
